@@ -1,5 +1,5 @@
 const express = require("express")
-const {getAllSchedule, addNewSchedule, updateSchedule, deleteSchedule } = require('../controller/ScheduleController')
+const {getAllSchedule, addNewSchedule, updateSchedule, deleteSchedule } = require('../controller/scheduleController')
 const router = express.Router()
 
 router.get('/', getAllSchedule)
