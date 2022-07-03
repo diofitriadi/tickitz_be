@@ -4,7 +4,7 @@ const db = require('../helper/db_connection')
 module.exports = {
     get: (req, res)=> {
       return new Promise((resolve, reject)=> {
-        const sql = 'SELECT * FROM `schedule`'
+        const sql = `SELECT * FROM schedule left join movies on schedule.id = movies.id_movies`;
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})
@@ -19,9 +19,9 @@ module.exports = {
     },
     add: (req, res)=> {
       return new Promise((resolve, reject)=> {
-        const {date, place, cinema, adress, logo, showtime} = req.body
+        const {id_movies ,date, place, cinema, adress, logo, showtime} = req.body
 
-        db.query(`INSERT INTO schedule(date, place, cinema, adress, logo, showtime) VALUES('${date}', '${place}','${cinema}','${adress}','${logo}','${showtime}')`,
+        db.query(`INSERT INTO schedule(id_movies, date, place, cinema, adress, logo, showtime) VALUES('${id_movies}','${date}', '${place}','${cinema}','${adress}','${logo}','${showtime}')`,
         (err, results)=> {
           if(err) {
             console.log(err)
@@ -48,9 +48,9 @@ module.exports = {
             ...results[0],
             ...req.body
           }
-          const {date, place, cinema, adress, logo, showtime} = previousData
+          const {id_movies,date, place, cinema, adress, logo, showtime} = previousData
       
-          db.query(`UPDATE schedule SET date='${date}', place='${place}', cinema='${cinema}', adress='${adress}', logo='${logo}', showtime='${showtime}' WHERE id=${id}`,(err, results)=> {
+          db.query(`UPDATE schedule SET id_movies= '${id_movies}', date='${date}', place='${place}', cinema='${cinema}', adress='${adress}', logo='${logo}', showtime='${showtime}' WHERE id=${id}`,(err, results)=> {
             if(err) {
               console.log(err)
               reject({message: "ada error"})

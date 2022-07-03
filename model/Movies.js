@@ -5,7 +5,7 @@ module.exports = {
     get: (req, res)=> {
       return new Promise((resolve, reject)=> {
         const {title = '', release_date = ''} = req.query 
-        const sql = `SELECT * FROM movies ${title ? `WHERE title LIKE '%${title}%'`: title && release_date ? `WHERE title LIKE '%${title}%' AND director LIKE '${release_date}%'`:''} ORDER BY release_date DESC`
+        const sql = `SELECT * FROM movies ${title ? `WHERE title LIKE '%${title}%'`: title && release_date ? `WHERE title LIKE '%${title}%' AND release_date LIKE '${release_date}%'`:''} ORDER BY release_date DESC`
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})
@@ -19,8 +19,8 @@ module.exports = {
       })
     },getById: (req, res)=> {
       return new Promise((resolve, reject)=> {
-        const {id} = req.params
-        const sql = `SELECT * FROM movies WHERE id=${id}`
+        const {id_movies} = req.params
+        const sql = `SELECT * FROM movies WHERE id_movies=${id_movies}`
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})
@@ -56,8 +56,8 @@ module.exports = {
     },
     update: (req, res) => {
       return new Promise((resolve, reject)=> {
-        const {id} = req.params
-        db.query(`SELECT * FROM movies where id=${id}`,(err, results)=> {
+        const {id_movies} = req.params
+        db.query(`SELECT * FROM movies where id_movies=${id_movies}`,(err, results)=> {
           if(err) {res.send({message: "ada error"})}
       
           const previousData = {
@@ -83,8 +83,8 @@ module.exports = {
     },
     remove:(req, res)=> {
       return new Promise((resolve, reject)=> {
-        const {id} = req.params
-        db.query(`DELETE FROM movies where id=${id}`,(err, results)=> {
+        const {id_movies} = req.params
+        db.query(`DELETE FROM movies where id_movies=${id_movies}`,(err, results)=> {
           if(err) {reject({message: "ada error"})}
           resolve({
             message: "delete movies success",
