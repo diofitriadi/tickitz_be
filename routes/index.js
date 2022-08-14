@@ -3,12 +3,14 @@ const app = express()
 const moviesRoute = require('./moviesRoute')
 const bookingRoute = require('./bookingRoute')
 const scheduleRoute = require('./scheduleRoute')
-const usersRoute = require('./usersRoute')
+const authRoute = require('./authRoute')
+
 
 app.use('/movies', moviesRoute)
 app.use('/booking', bookingRoute)
 app.use('/schedule', scheduleRoute)
-app.use('/users', usersRoute)
+app.use('/auth', authRoute)
+
 
 
 

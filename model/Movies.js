@@ -1,11 +1,13 @@
 // model = tempat dimana kita meletakkan data yang berhubungan dengan database
 const db = require('../helper/db_connection')
+const fs = require('fs')
 
 module.exports = {
     get: (req, res)=> {
       return new Promise((resolve, reject)=> {
-        const {title = '', release_date = ''} = req.query 
-        const sql = `SELECT * FROM movies ${title ? `WHERE title LIKE '%${title}%'`: title && release_date ? `WHERE title LIKE '%${title}%' AND release_date LIKE '${release_date}%'`:''} ORDER BY release_date DESC`
+        const {title = '', release_date = ''} = req.query
+        const offset = (req.query.page - 1) * req.query.limit
+        const sql = `SELECT * FROM movies ${title ? `WHERE title LIKE '%${title}%'`: title && release_date ? `WHERE title LIKE '%${title}%' AND release_date LIKE '${release_date}%'`:''} ORDER BY release_date DESC LIMIT ${req.query.limit} OFFSET ${offset}`;
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})
@@ -19,8 +21,8 @@ module.exports = {
       })
     },getById: (req, res)=> {
       return new Promise((resolve, reject)=> {
-        const {id_movies} = req.params
-        const sql = `SELECT * FROM movies WHERE id_movies=${id_movies}`
+        const {id} = req.params
+        const sql = `SELECT * FROM movies WHERE id_movies='${id}'`
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})
@@ -36,7 +38,6 @@ module.exports = {
     add: (req, res)=> {
       return new Promise((resolve, reject)=> {
         const {cover, title, categories, release_date, director, duration, casts, synopsis} = req.body
-
         db.query(`INSERT INTO movies(cover, title, categories, release_date, director, duration, casts, synopsis) VALUES('${cover}', '${title}','${categories}','${release_date}','${director}','${duration}','${casts}', '${synopsis}')`, 
         (err, results)=> {
           if(err) {
@@ -56,8 +57,8 @@ module.exports = {
     },
     update: (req, res) => {
       return new Promise((resolve, reject)=> {
-        const {id_movies} = req.params
-        db.query(`SELECT * FROM movies where id_movies=${id_movies}`,(err, results)=> {
+        const {id} = req.params
+        db.query(`SELECT * FROM movies where id_movies='${id}'`,(err, results)=> {
           if(err) {res.send({message: "ada error"})}
       
           const previousData = {
@@ -65,8 +66,19 @@ module.exports = {
             ...req.body
           }
           const {cover, title, categories, release_date, director, duration, casts, synopsis} = previousData
-      
-          db.query(`UPDATE movies SET cover='${cover}', title='${title}', categories='${categories}', release_date='${release_date}', director='${director}', duration='${duration}', casts='${casts}', synopsis='${synopsis}' WHERE id=${id}`,(err, results)=> {
+          const tempImg = results[0].cover
+          if (req.body.cover) {
+            fs.unlink(`uploads/${tempImg}`, function (err) {
+              if (err) {
+                console.log(err);
+                reject({
+                  message: "Something wrong",
+                });
+              }
+            });
+          }
+
+          db.query(`UPDATE movies SET cover='${cover}', title='${title}', categories='${categories}', release_date='${release_date}', director='${director}', duration='${duration}', casts='${casts}', synopsis='${synopsis}' WHERE id_movies='${id}'`,(err, results)=> {
             if(err) {
               console.log(err)
               reject({message: "ada error"})
@@ -83,8 +95,8 @@ module.exports = {
     },
     remove:(req, res)=> {
       return new Promise((resolve, reject)=> {
-        const {id_movies} = req.params
-        db.query(`DELETE FROM movies where id_movies=${id_movies}`,(err, results)=> {
+        const {id} = req.params
+        db.query(`DELETE FROM movies where id_movies='${id}'`,(err, results)=> {
           if(err) {reject({message: "ada error"})}
           resolve({
             message: "delete movies success",
