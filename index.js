@@ -8,11 +8,12 @@ const cors = require('cors')
 const path = require('path')
 const paginate = require('express-paginate')
 
+app.use(cors())
 //cara pertama kita input kita ada di json (di postman: body > Raw > Type = JSON)
 app.use(bodyParser.json())
 //www-url-form-encoded
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use('/api/v1', router)
 

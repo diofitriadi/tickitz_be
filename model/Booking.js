@@ -20,7 +20,6 @@ module.exports = {
     add: (req, res)=> {
       return new Promise((resolve, reject)=> {
         const {title, date_time, cinema, number_of_ticket, total_payment, payment_method} = req.body
-
         db.query(`INSERT INTO booking(title, date_time, cinema, number_of_ticket, total_payment, payment_method) VALUES('${title}', '${date_time}','${cinema}','${number_of_ticket}','${total_payment}','${payment_method}')`,
         (err, results)=> {
           if(err) {

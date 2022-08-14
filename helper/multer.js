@@ -38,7 +38,7 @@ const upload = (req, res, next) => {
         } else if(err){
             return res.json({
                 success: false,
-                message: "File must be jpg, jpeg, png"
+                message: "File must be jpg, jpeg, png, or gif"
         })
         }
     next()

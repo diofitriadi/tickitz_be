@@ -8,7 +8,7 @@ module.exports = {
         return new Promise((resolve, reject)=> {
             db.query(`SELECT id, password, role FROM users WHERE email='${email.toLowerCase()}'`
             ,(err, results)=> {
-                if(err) {reject({message: 'Email atau Password salah'}) //bcrypt nya error
+                if(err) {reject({message: 'Wrong Email or Password'}) //bcrypt nya error
                 } else {
                     bcrypt.compare(password, results[0].password, function(errHash, succHash) {                  
                         if(errHash) {reject({message: 'Ada Masalah Saat Login, Silahkan Coba Lagi'})}
@@ -19,8 +19,8 @@ module.exports = {
                             resolve({
                                 message: 'login success',
                                 status: 200,
-                                token,
-                                user_id: results[0].id
+                                user_id: results[0].id,
+                                token
                                 })
                         } else {reject({message: 'Email atau Password salah'})}    
                     })

@@ -5,7 +5,7 @@ const upload = require('../helper/multer')
 const verifyAuth = require("../helper/verifyAuth")
 
 router.get('/', getAllMovies)
-router.get('/:id', getMoviesById )
+router.get('/:id', getMoviesById)
 router.post('/', verifyAuth, upload, addNewMovies)
 router.patch('/:id', verifyAuth, upload, updateMovies)
 router.delete('/:id', verifyAuth, deleteMovies)

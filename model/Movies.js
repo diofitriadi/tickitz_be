@@ -6,17 +6,39 @@ module.exports = {
     get: (req, res)=> {
       return new Promise((resolve, reject)=> {
         const {title = '', release_date = ''} = req.query
-        const offset = (req.query.page - 1) * req.query.limit
-        const sql = `SELECT * FROM movies ${title ? `WHERE title LIKE '%${title}%'`: title && release_date ? `WHERE title LIKE '%${title}%' AND release_date LIKE '${release_date}%'`:''} ORDER BY release_date DESC LIMIT ${req.query.limit} OFFSET ${offset}`;
+        const {limit = 5, page = 1} = req.query
+        const offset = (page-1)*limit
+        const sql = `SELECT * FROM movies ${title ? `WHERE title LIKE '%${title}%'`: title && release_date ? `WHERE title LIKE '%${title}%' AND release_date LIKE '${release_date}%'`:''} ORDER BY release_date DESC LIMIT ${limit} OFFSET ${offset}`;
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})
+          } else {
+            db.query(`SELECT id_movies from movies`, (err, result) => {
+              if(err) {
+                console.log(err)
+                reject({
+                  message: "Something wrong"
+                })
+              } else {
+                let totalPage = Math.ceil(result.length/limit)
+                if(page > totalPage) {
+                  reject({
+                    message: "Page not found!",
+                    status: 404,
+                    data: []
+                  })
+                }
+                resolve({
+                  message: "Get all from movies success",
+                  status: 200,
+                  totalRow: results.length,
+                  totalPage: totalPage,
+                  data: results
+                });
+              }
+            })
           }
-          resolve({
-            message: "get all from movies success",
-            status: 200,
-            data: results
-          })
+          
         })
       })
     },getById: (req, res)=> {
