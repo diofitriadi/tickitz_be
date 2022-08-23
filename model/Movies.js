@@ -6,9 +6,9 @@ module.exports = {
     get: (req, res)=> {
       return new Promise((resolve, reject)=> {
         const {title = '', release_date = ''} = req.query
-        const {limit = 5, page = 1} = req.query
-        const offset = (page-1)*limit
-        const sql = `SELECT * FROM movies ${title ? `WHERE title LIKE '%${title}%'`: title && release_date ? `WHERE title LIKE '%${title}%' AND release_date LIKE '${release_date}%'`:''} ORDER BY release_date DESC LIMIT ${limit} OFFSET ${offset}`;
+        const {limit, page} = req.query
+        const offset = (page-1) * limit
+        const sql = `SELECT * FROM movies ${title ? `WHERE title LIKE '%${title}%'`: title && release_date ? `WHERE title LIKE '%${title}%' AND release_date LIKE '${release_date}%'`:''} ORDER BY release_date DESC ${page && limit ? `LIMIT ${limit} OFFSET ${offset}`:''}`
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})
@@ -50,7 +50,7 @@ module.exports = {
             reject({message: "ada error"})
           }
           resolve({
-            message: "get all movies by id success",
+            message: "get movies by id success",
             status: 200,
             data: results
           })
