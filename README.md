@@ -49,7 +49,7 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-Before installing, you must be install [nodejs](https://nodejs.org) [yarn](https://yarnpkg.com/getting-started/install)
+Before installing, you must be install [nodejs](https://nodejs.org)
 
 ### Installation
 
