@@ -14,6 +14,8 @@ app.use(bodyParser.json())
 //www-url-form-encoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
+
+app.get("/", (req, res) => res.send("service is running"))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use('/api/v1', router)
 
