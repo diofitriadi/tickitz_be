@@ -4,7 +4,7 @@ const db = require('../helper/db_connection')
 module.exports = {
     get: (req, res)=> {
       return new Promise((resolve, reject)=> {
-        const sql = 'SELECT users.full_name, users.email, users.phone_number, booking.title, booking.date_time, booking.cinema, booking.number_of_ticket, booking.total_payment, booking.payment_method FROM users INNER JOIN booking ON users.id=booking.id'
+        const sql = 'SELECT users.full_name, users.email, users.phone_number, booking.title, booking.date_time, booking.cinema, booking.number_of_ticket, booking.total_payment, booking.payment_method FROM users INNER JOIN booking ON users.id=booking.id' 
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})
