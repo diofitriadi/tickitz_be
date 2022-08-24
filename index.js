@@ -15,12 +15,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
-app.get("/", (req, res) => res.send("service is running"))
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use('/api/v1', router)
 
 
-
+app.get("/", (req, res) => res.send("service is running"))
 app.listen(port, () => {
   console.log(`Tickitz Backend listening on port ${port}`)
 })
