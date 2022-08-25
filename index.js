@@ -6,7 +6,7 @@ const router = require('./routes')
 const cors = require('cors')
 const path = require('path')
 const paginate = require('express-paginate')
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3006
 app.use(cors())
 //cara pertama kita input kita ada di json (di postman: body > Raw > Type = JSON)
 app.use(bodyParser.json())
