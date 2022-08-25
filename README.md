@@ -33,7 +33,7 @@ some technology used in this project.
 
 ### Documentation
 
-[Postman](https://documenter.getpostman.com/view/21597644/UzR1Ki4t#332587b8-bc2a-49d9-8080-4c705bda006a)
+[Postman](https://documenter.getpostman.com/view/21564719/UzBsHPio#cce33846-debf-4190-ac94-eda70b5e04e7)
 
 ### Related
 
