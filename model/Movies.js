@@ -5,10 +5,11 @@ const fs = require('fs')
 module.exports = {
     get: (req, res)=> {
       return new Promise((resolve, reject)=> {
-        const {title = '', release_date = ''} = req.query
-        const {limit, page} = req.query
+        const {title ='', release_date ='', categories ='' , order='title'} = req.query
+        const {limit, page, sortBy = 'DESC'} = req.query
         const offset = (page-1) * limit
-        const sql = `SELECT * FROM movies ${title ? `WHERE title LIKE '%${title}%'`: title && release_date ? `WHERE title LIKE '%${title}%' AND release_date LIKE '${release_date}%'`:''} ORDER BY release_date DESC ${page && limit ? `LIMIT ${limit} OFFSET ${offset}`:''}`
+        const sql = `SELECT * FROM movies WHERE title LIKE '%${title}%' AND release_date LIKE '%${release_date}%' AND categories LIKE '%${categories}%' ORDER BY ${order} ${sortBy} ${page && limit ? `LIMIT ${limit} OFFSET ${offset}`:''}`
+        console.log(req.query)
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})

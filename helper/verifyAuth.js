@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 
 
-const verifyAuth = (req, res, next) => {
+const verifyAdmin = (req, res, next) => {
     if(!req.headers.authorization) {
-        return res.status(401).send({message: 'unathorized user, token needed'})
+        return res.status(401).send({message: 'unathorized admin, token needed'})
     } else {
         jwt.verify(req.headers.authorization, process.env.JWT_SECRET_KEY, function(err, decoded) {
             if(err) {
@@ -16,7 +16,22 @@ const verifyAuth = (req, res, next) => {
             }
     });
     }
-
 }
 
-module.exports = verifyAuth
+const verifyUser = (req, res, next) => {
+    if(!req.headers.authorization) {
+        return res.status(401).send({message: 'unauthorized user, token needed'})
+    } else {
+        jwt.verify(req.headers.authorization, process.env.JWT_SECRET_KEY, function(err, decoded) {
+            if(err) {
+                return res.status(403).send({message: 'Access Forbidden'})
+            }
+            else if(decoded.role === process.env.ROLE_USER) {
+                next()
+            }
+    });
+    
+    }
+}
+
+module.exports = {verifyAdmin, verifyUser}

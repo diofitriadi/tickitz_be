@@ -1,10 +1,14 @@
 const express = require("express")
-const {getAllUsers, addNewUsers, updateUsers, deleteUsers } = require('../controller/usersController')
 const router = express.Router()
-const verifyAuth = require("../helper/verifyAuth")
+const upload = require('../helper/multer')
+const {verifyAdmin, verifyUser} = require("../helper/verifyAuth")
+const {getAllUsers, deleteUsers, updateUser, getUsersById } = require('../controller/usersController')
 
-router.get('/', verifyAuth, getAllUsers)
-router.delete('/:id', verifyAuth, deleteUsers)
+
+router.get('/', verifyAdmin, getAllUsers)
+router.get('/:id', verifyAdmin, getUsersById)
+router.patch('/update', verifyUser, upload, updateUser)
+router.delete('/:id', verifyAdmin, deleteUsers)
 
 
 
