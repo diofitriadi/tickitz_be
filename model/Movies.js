@@ -9,7 +9,6 @@ module.exports = {
         const {limit, page, sortBy = 'DESC'} = req.query
         const offset = (page-1) * limit
         const sql = `SELECT * FROM movies WHERE title LIKE '%${title}%' AND release_date LIKE '%${release_date}%' AND categories LIKE '%${categories}%' ORDER BY ${order} ${sortBy} ${page && limit ? `LIMIT ${limit} OFFSET ${offset}`:''}`
-        console.log(req.query)
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})
