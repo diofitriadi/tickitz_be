@@ -85,21 +85,34 @@ module.exports = {
       
           const previousData = {
             ...results[0],
+            release_date: results[0].release_date.toISOString().split('T')[0],
             ...req.body
           }
           const {cover, title, categories, release_date, director, duration, casts, synopsis} = previousData
           const tempImg = results[0].cover
-          if (req.body.cover) {
-            fs.unlink(`uploads/${tempImg}`, function (err) {
-              if (err) {
-                console.log(err);
-                reject({
-                  message: "Something wrong",
-                });
+          if (req.body.cover === '') {
+            prevData = {
+                ...prevData,
+                cover: results[0].cover
+            }
+          }                 
+          if (req.body.cover !== '' && !req.body.cover) {
+            if (results[0].cover !== req.body.cover) {
+              fs.unlink(`uploads/${tempImg}`, (err) => {
+                  if (err) {
+                      reject({
+                          success: false,
+                          status: 500,
+                          message: err,
+                      })
+                  }
+              })
+              prevData = {
+                  ...prevData,
+                  cover: req.file.filename
               }
-            });
           }
-
+      }
           db.query(`UPDATE movies SET cover='${cover}', title='${title}', categories='${categories}', release_date='${release_date}', director='${director}', duration='${duration}', casts='${casts}', synopsis='${synopsis}' WHERE id_movies='${id}'`,(err, results)=> {
             if(err) {
               console.log(err)
@@ -118,13 +131,44 @@ module.exports = {
     remove:(req, res)=> {
       return new Promise((resolve, reject)=> {
         const {id} = req.params
-        db.query(`DELETE FROM movies where id_movies='${id}'`,(err, results)=> {
-          if(err) {reject({message: "ada error"})}
-          resolve({
-            message: "delete movies success",
-            status: 200,
-            data: results
-          })
+        db.query(`SELECT id_movies, cover FROM movies WHERE id_movies='${id}'`,(err, results)=> {
+          if(err) {
+            reject({message: "ada error"})
+          } else if(results.length === 0) {
+            reject({
+              success: false,
+              status: 400,
+              message: "update error"
+            })
+          } else {
+            const tempImg = results[0].cover
+            db.query(`DELETE FROM movies WHERE id_movies=${id}`),(err, results) => {
+              if(err) {
+                reject({
+                  success: false,
+                  status: 500,
+                  message: `Error!`,
+                  data: err
+                })
+              } else {
+                fs.unlink(`uploads/${tempImg}`, (err) => {
+                  if (err) {
+                      reject({
+                          success: false,
+                          status: 500,
+                          message: err,
+                      })
+                  }
+                })
+                resolve({
+                  success: true,
+                  message: "delete movies success",
+                  status: 200,
+                  data: results
+                })
+              }
+            }
+          }
         })
       })
     }
