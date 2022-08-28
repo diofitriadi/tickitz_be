@@ -90,29 +90,17 @@ module.exports = {
           }
           const {cover, title, categories, release_date, director, duration, casts, synopsis} = previousData
           const tempImg = results[0].cover
-          if (req.body.cover === '') {
+          if (req.file === '') {
             prevData = {
                 ...prevData,
                 cover: results[0].cover
             }
           }                 
-          if (req.body.cover !== '' && !req.body.cover) {
-            if (results[0].cover !== req.body.cover) {
-              fs.unlink(`uploads/${tempImg}`, (err) => {
-                  if (err) {
-                      reject({
-                          success: false,
-                          status: 500,
-                          message: err,
-                      })
-                  }
+          if (req.file) {
+              fs.unlink(`./uploads/${tempImg}`, (err) => {
+                console.log(err)
               })
-              prevData = {
-                  ...prevData,
-                  cover: req.file.filename
-              }
           }
-      }
           db.query(`UPDATE movies SET cover='${cover}', title='${title}', categories='${categories}', release_date='${release_date}', director='${director}', duration='${duration}', casts='${casts}', synopsis='${synopsis}' WHERE id_movies='${id}'`,(err, results)=> {
             if(err) {
               console.log(err)
@@ -138,25 +126,25 @@ module.exports = {
             reject({
               success: false,
               status: 400,
-              message: "update error"
+              message: "delete error, data not found"
             })
           } else {
             const tempImg = results[0].cover
-            db.query(`DELETE FROM movies WHERE id_movies=${id}`),(err, results) => {
+            db.query(`DELETE FROM movies WHERE id_movies=${id}`,(err, results) => {
+              console.log("haloo")
               if(err) {
                 reject({
                   success: false,
                   status: 500,
-                  message: `Error!`,
-                  data: err
+                  message: 'error'
                 })
               } else {
-                fs.unlink(`uploads/${tempImg}`, (err) => {
+                fs.unlink(`./uploads/${tempImg}`, (err) => {
                   if (err) {
                       reject({
                           success: false,
                           status: 500,
-                          message: err,
+                          message: 'error',
                       })
                   }
                 })
@@ -167,7 +155,7 @@ module.exports = {
                   data: results
                 })
               }
-            }
+            })
           }
         })
       })
