@@ -4,7 +4,7 @@ const db = require('../helper/db_connection')
 module.exports = {
     get: (req, res)=> {
       return new Promise((resolve, reject)=> {
-        const sql = 'SELECT users.full_name, users.email, users.phone_number, booking.title, booking.date_time, booking.cinema, booking.number_of_ticket, booking.total_payment, booking.payment_method FROM users INNER JOIN booking ON users.id=booking.id' 
+        const sql = `SELECT * FROM booking LEFT JOIN movies on booking.id_movies = movies.id_movies LEFT JOIN booking.id_cinema = cinema.id_cinema ORDER BY booking.created_at DESC` 
         db.query(sql,(err, results)=> {
           if(err) {
             reject({message: "ada error"})
@@ -19,8 +19,8 @@ module.exports = {
     },
     add: (req, res)=> {
       return new Promise((resolve, reject)=> {
-        const {title, date_time, cinema, number_of_ticket, total_payment, payment_method} = req.body
-        db.query(`INSERT INTO booking(title, date_time, cinema, number_of_ticket, total_payment, payment_method) VALUES('${title}', '${date_time}','${cinema}','${number_of_ticket}','${total_payment}','${payment_method}')`,
+        const {id_movies , id_cinema, date_playing, time, seat} = req.body
+        db.query(`INSERT INTO booking(id_movies, id_cinema, date_playing, time, seat VALUES('${id_movies}', '${id_cinema}','${date_playing}','${time}','${seat}')`,
         (err, results)=> {
           if(err) {
             console.log(err)

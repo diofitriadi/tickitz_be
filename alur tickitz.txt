@@ -1,0 +1,12 @@
+-schedule mengambil data movies, cinema, dan location
+-didalam schedule nanti di join kesemuanya
+-setelah di join, data schedule yang sudah di join itu
+ dimasukkan kedalam booking, 
+-booking di join ke user
+
+
+-user bisa booking banyak schedule
+-setelah user booking, maka 1 schedule itu ditambah 1 
+ harga cinema, "boleh booking schedule lebih dari 1"
+-lanjutkan ke payment dan payment method di join
+-transaksi sukses
