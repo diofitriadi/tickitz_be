@@ -33,12 +33,11 @@ some technology used in this project.
 
 ### Documentation
 
-[Postman](https://documenter.getpostman.com/view/21564719/UzBsHPio#cce33846-debf-4190-ac94-eda70b5e04e7)
+[Postman](https://documenter.getpostman.com/view/21564719/UzBsHPio)
 
 ### Related
 
 [Tickitz(Frontend)](https://github.com/diofitriadi/tickitz_fe)
-[Tickitz(Admin Page)](https://github.com/diofitriadi/tickitz_fe_admin)
 
 <!-- GETTING STARTED -->
 
