@@ -10,3 +10,9 @@
  harga cinema, "boleh booking schedule lebih dari 1"
 -lanjutkan ke payment dan payment method di join
 -transaksi sukses
+
+
+INSERT INTO `schedule` (`id_movies`, `id_cinema`, `
+id_location`, `date_start`, `date_end`, `time`)
+VALUES ('2', '2', '5', '2022-10-03', '2023-01-03'
+, '12:00, 14:00, 16:00, 18:00, 20:00, 22:00')
