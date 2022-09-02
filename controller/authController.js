@@ -11,10 +11,14 @@ module.exports = {
     },
     register: async (req, res)=> {
         try {
-            const results = await Auth.register(req, res)
-            return res.status(200).send(results)
+            const reqModifer = {
+                ...req,
+                body: { ...req.body, image: req.file.filename }
+            }
+            const results = await Auth.register(reqModifer, res)
+            return res.status(201).send(results)
         } catch (error) {
-            return res.status(500).send(error)
+            return res.status(400).send(error)
         }
     }
 }
