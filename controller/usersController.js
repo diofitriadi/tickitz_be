@@ -20,25 +20,20 @@ module.exports = {
   },
   updateUser: async (req, res) => {
     try {
-      let reqModified = {
+      let reqModifier = {
         ...req,
       };
       if (req.file) {
-        if (req.file !== null && req.file !== "") {
-          reqModified = {
-            ...req,
-            body: { ...req.body, image: req.file.filename },
-          };
+        reqModifier = {
+          ...req,
+            body: { ...req.body, image: req.file.filename }
         }
       }
-      const results = await Users.updateByUser(reqModified, res);
-      return res.status(200).send(results);
+      const results = await Users.updateByUser(reqModifier, res);
+      return res.status(201).send(results);
     } 
     catch (error) {
-      if (error.code === 400) {
-        return res.status(400).send(error);
-      }
-      return res.status(500).send(error);
+      return res.status(400).send(error);
     }
   },
   deleteUsers: async (req, res) => {
