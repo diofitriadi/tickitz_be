@@ -7,7 +7,7 @@ module.exports = {
     const { email, password } = req.body;
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT id, name, email, password, phone_number, role FROM users WHERE email='${email.toLowerCase()}'`,
+        `SELECT id, name, email, password, image, phone_number, role FROM users WHERE email='${email.toLowerCase()}'`,
         (err, results) => {
           if (err) {
             reject({ message: "Wrong Email or Password" }); //bcrypt nya error
@@ -36,7 +36,9 @@ module.exports = {
                     user_id: results[0].id,
                     name: results[0].name,
                     phone_number: results[0].phone_number,
-                    role: results[0].role
+                    role: results[0].role,
+                    email: results[0].email,
+                    image: results[0].image
                   });
                 } else {
                   reject({ message: "Email atau Password salah" });
