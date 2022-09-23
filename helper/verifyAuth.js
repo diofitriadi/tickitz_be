@@ -26,9 +26,9 @@ const verifyUser = (req, res, next) => {
             if(err) {
                 return res.status(403).send({message: 'Access Forbidden'})
             }
-            else if(decoded.role === process.env.ROLE_USER) {
+            if(decoded.role === process.env.ROLE_USER) {
                 next()
-            }
+            } 
     });
     
     }

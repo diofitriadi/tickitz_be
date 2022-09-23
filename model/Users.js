@@ -51,10 +51,11 @@ module.exports = {
 
             const previousData = {
               ...results[0],
+              image: results[0].image,
               ...req.body
             }
             
-            const { name, email, password, image, phone_number } = previousData
+            const { name, email, image, phone_number } = previousData
 
             const tempImg = results[0].image
             if(req.file = '') {
